@@ -73,9 +73,12 @@ fun LemonadeWithText(modifier: Modifier = Modifier) {
     var number by remember {
         mutableStateOf(1)
     }
-    var squeeze by remember {
+    // counter variable to keep tap of squeeze
+    var squeezeCount by remember {
         mutableStateOf(0)
     }
+
+    var requiredTaps = (2..4).random()
 
     var(imageId, txtId, contentDescriptionId) = when (number){
         1 -> Triple(R.drawable.lemon_tree,R.string.tap,"Description")
@@ -86,7 +89,7 @@ fun LemonadeWithText(modifier: Modifier = Modifier) {
 
     }
     Column(
-        modifier = modifier.clickable (onClick ={} ),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
@@ -107,7 +110,17 @@ fun LemonadeWithText(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .background(color = Color.hsl(128f, .89f, .92f,),
                     shape = RoundedCornerShape(16.dp))
-                    .clickable(onClick = {})
+                    .clickable(onClick = {
+                        when(number){
+                            2 -> {squeezeCount++
+                            if(squeezeCount == requiredTaps){
+                                ++number}
+                            }
+                            4 -> {number = 1
+                            squeezeCount = 0}
+                            else -> ++number
+                        }
+                    })
                     .size(250.dp)
 
             )
